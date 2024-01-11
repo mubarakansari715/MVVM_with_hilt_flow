@@ -1,15 +1,15 @@
 package com.mubarak.myapplicationfortest.view.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.mubarak.myapplicationfortest.R
 import com.mubarak.myapplicationfortest.utils.ApiState
+import com.mubarak.myapplicationfortest.view.model.HomeDataClass
 import com.mubarak.myapplicationfortest.view.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -26,22 +26,25 @@ class MainActivity : AppCompatActivity() {
         homeViewModel.getHomePageCallApi()
 
         lifecycleScope.launch {
-            homeViewModel.mHomePageResponse.collectLatest {
+            homeViewModel.mHomePageResponse.collect {
 
                 when (it) {
-                    is ApiState.Loading -> {
-                        //DebugLog.e("@@@ Loading")
+                    is ApiState.OnLoading -> {
+                        Log.e("TAG", "onCreate: onLoading")
                     }
-                    is ApiState.Empty -> {
-                       // DebugLog.e("@@@ Empty")
+
+                    is ApiState.OnEmpty -> {
+                        // DebugLog.e("@@@ OnEmpty")
                     }
-                    is ApiState.Success<*> -> {
-                       // DebugLog.e("@@@ Success ${it.data}")
-                       // binding.txtShowResponse.text = it.data.toString()
-                        Log.e("TAG", "onCreate: mubarak :: ${it.data}", )
+
+                    is ApiState.OnSuccessResponse<HomeDataClass> -> {
+                        // DebugLog.e("@@@ Success ${it.data}")
+                        // binding.txtShowResponse.text = it.data.toString()
+                        Log.e("TAG", "onCreate: mubarak :: ${it.response}")
                     }
-                    else -> {
-                       // DebugLog.e("@@@ Error: $it")
+
+                    is ApiState.OnFailed -> {
+                        Log.e("TAG", "onCreate: onFailed ${it.message}")
                     }
 
                 }
