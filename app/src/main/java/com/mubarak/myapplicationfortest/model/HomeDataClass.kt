@@ -1,4 +1,4 @@
-package com.mubarak.myapplicationfortest.view.model
+package com.mubarak.myapplicationfortest.model
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
